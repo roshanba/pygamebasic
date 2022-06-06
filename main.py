@@ -1,27 +1,46 @@
 import pygame
 import sys
 
+def currentScore():
+    currentTime=int((pygame.time.get_ticks()-startTime)/1000)
+    return currentTime
+
+def displayScore():
+    currentTime=currentScore()
+    scoreSur=testFont.render(f'SCORE:{currentTime}',False,'Blue')
+    screen.blit(scoreSur,scoreSur.get_rect(center=(400,100)))
+    
+
+def scoreMenu():
+    screen.fill((137, 207, 240))
+    screen.blit(textPixelRunnerSurf,textPixelRunnerRect)
+    textScoreSurf=textFont.render(f'SCORE:{str(score)}',False,'Black')
+    textScoreRect=textScoreSurf.get_rect(midbottom=(400,300))
+    screen.blit(textScoreSurf,textScoreRect)
+    screen.blit(textplayAgainSurf,textPlayAgainRect)
+
+
+
 pygame.init()
 screen=pygame.display.set_mode((800,450))
 pygame.display.set_caption('Roshan\'s game ')
 clock=pygame.time.Clock()
 testFont=pygame.font.Font('font/Pixeltype.ttf' ,50)
 
-def displayScore():
-    currentTime=pygame.time.get_ticks()
-    scoreSur=testFont.render(f'{currentTime}',False,'Blue')
-    screen.blit(scoreSur,scoreSur.get_rect(center=(400,100)))
-
 gameActive=True
-
+startTime=0
+score=0
 
 textSurf=testFont.render('Score',False,'Black')
 textRect=textSurf.get_rect(center=(400,40))
 
-text_playAgain_font=pygame.font.Font('font/Pixeltype.ttf' ,50)
-text_playAgain_surface=text_playAgain_font.render('Play Agaiin',False,'Black')
-text_PlayAgain_rect=text_playAgain_surface.get_rect(center=(400,100))
+textFont=pygame.font.Font('font/Pixeltype.ttf' ,50)
 
+textplayAgainSurf=textFont.render('Press Space to Play Again',False,'Black')
+textPlayAgainRect=textplayAgainSurf.get_rect(midbottom=(400,430))
+
+textPixelRunnerSurf=textFont.render('Pixel Runner',False,'Black')
+textPixelRunnerRect=textPixelRunnerSurf.get_rect(midtop=(400,100))
 
 sky_surface=pygame.image.load('graphics/sky.png').convert()
 ground_surface=pygame.image.load('graphics/ground.png').convert()
@@ -34,10 +53,11 @@ player_rect=player_surf.get_rect(bottomright=(80,300))
 
 time_per_frame=8690 #for 30fps
 player_gravity=0
+
 while True:
     for event in pygame.event.get():
-        
         if event.type==pygame.QUIT:
+            startTime=pygame.time.get_ticks()
             pygame.quit()
             sys.exit()
         if gameActive:
@@ -50,10 +70,11 @@ while True:
                     print('space wes clicked !! ')
                     player_gravity=-20
         else :
-            if event.type==pygame.MOUSEBUTTONDOWN and text_PlayAgain_rect.collidepoint(event.pos) : 
+            if event.type==pygame.MOUSEBUTTONDOWN and textPlayAgainRect.collidepoint(event.pos) : 
                 gameActive=True
             elif event.type==pygame.KEYDOWN and event.key==pygame.K_SPACE:
                 gameActive=True
+            startTime=pygame.time.get_ticks()
 
 
     if gameActive:
@@ -62,7 +83,7 @@ while True:
         pygame.draw.rect(screen,'Red',textRect,5)
 
         screen.blit(textSurf,textRect)
-        displayScore()
+        
         screen.blit(ground_surface,(0,300)) 
         screen.blit(snail_surface,snail_rect)
     
@@ -80,12 +101,13 @@ while True:
             snail_rect.x=800
     
         if snail_rect.colliderect(player_rect):
+            score=currentScore()
             gameActive=False
             snail_rect.x=800
 
     else:
-        screen.fill('Yellow')
-        screen.blit(text_playAgain_surface,text_PlayAgain_rect)
+        scoreMenu()
+        
  
     pygame.display.update()
     clock.tick(30)
