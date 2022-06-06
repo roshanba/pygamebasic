@@ -8,16 +8,27 @@ def currentScore():
 def displayScore():
     currentTime=currentScore()
     scoreSur=testFont.render(f'SCORE:{currentTime}',False,'Blue')
-    screen.blit(scoreSur,scoreSur.get_rect(center=(400,100)))
+    screen.blit(scoreSur,scoreSur.get_rect(midtop=(400,50)))
     
 
 def scoreMenu():
     screen.fill((137, 207, 240))
+
+    textPixelRunnerSurf=textFont.render('Pixel Runner',False,'Black')
+    textPixelRunnerRect=textPixelRunnerSurf.get_rect(midtop=(400,50))
+
     screen.blit(textPixelRunnerSurf,textPixelRunnerRect)
     textScoreSurf=textFont.render(f'SCORE:{str(score)}',False,'Black')
-    textScoreRect=textScoreSurf.get_rect(midbottom=(400,300))
+    textScoreRect=textScoreSurf.get_rect(midtop=(400,300))
     screen.blit(textScoreSurf,textScoreRect)
     screen.blit(textplayAgainSurf,textPlayAgainRect)
+
+    playerSurf=pygame.image.load('graphics/player/player_stand.png').convert_alpha()
+    
+    playerRect=playerSurf.get_rect()
+    playerSurf=pygame.transform.scale(playerSurf,(playerRect.w*2,playerRect.h*2))
+    playerRect=playerSurf.get_rect(midtop=(400,100))
+    screen.blit(playerSurf,playerRect)
 
 
 
@@ -39,8 +50,7 @@ textFont=pygame.font.Font('font/Pixeltype.ttf' ,50)
 textplayAgainSurf=textFont.render('Press Space to Play Again',False,'Black')
 textPlayAgainRect=textplayAgainSurf.get_rect(midbottom=(400,430))
 
-textPixelRunnerSurf=textFont.render('Pixel Runner',False,'Black')
-textPixelRunnerRect=textPixelRunnerSurf.get_rect(midtop=(400,100))
+
 
 sky_surface=pygame.image.load('graphics/sky.png').convert()
 ground_surface=pygame.image.load('graphics/ground.png').convert()
