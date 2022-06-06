@@ -7,18 +7,19 @@ def currentScore():
     return currentTime
 
 def displayScore():
-    currentTime=currentScore()
-    scoreSur=textFont.render(f'SCORE:{currentTime}',False,'Blue')
-    screen.blit(scoreSur,scoreSur.get_rect(midtop=(400,50)))
+    score=currentScore()
+    scoreSur=textFont.render(f'SCORE:{score}',False,'Blue')
+    screen.blit(scoreSur,scoreSur.get_rect(midtop=(400,120)))
+    return score
     
 def scoreMenu():
     
-
+    obstacleRectList.clear()
     # Pixel Runner Text 
     textPixelRunnerSurf=textFont.render('Pixel Runner',False,'Black')
     textPixelRunnerRect=textPixelRunnerSurf.get_rect(midtop=(400,50))
 
-    # Sccore Text 
+    #Sccore Text 
     textScoreSurf=textFont.render(f'SCORE:{str(score)}',False,'Black')
     textScoreRect=textScoreSurf.get_rect(midtop=(400,300))
     
@@ -37,6 +38,7 @@ def scoreMenu():
 
     screen.fill((137, 207, 240)) # main screen
     screen.blit(textPixelRunnerSurf,textPixelRunnerRect) # top Text
+   
     screen.blit(textScoreSurf,textScoreRect) # Score Text
     screen.blit(playerSurf,playerRect)# Player Image
     screen.blit(textplayAgainSurf,textPlayAgainRect) # play Again text
@@ -55,14 +57,13 @@ def obstacleMovement(obstacleRectList):
     else:
         return []
         
+def collions(player,obstacles):
+    if obstacles:
+        for obstacle in obstacles:
+            if player.colliderect(obstacle):
+                return False
+    return True
 
-
-
-gameActive=True
-startTime=0
-score=0
-time_per_frame=8690 #for 30fps
-player_gravity=0
 
 pygame.init()
 clock=pygame.time.Clock()
@@ -71,6 +72,11 @@ screen=pygame.display.set_mode((800,450)) # main Screen
 pygame.display.set_caption('Roshan\'s game ')
 
 textFont=pygame.font.Font('font/Pixeltype.ttf' ,50)
+gameActive=True
+startTime=0
+score=0
+time_per_frame=8690 #for 30fps
+player_gravity=0
 
 textSurf=textFont.render('Score',False,(251, 251, 253))
 textRect=textSurf.get_rect(center=(400,40))
@@ -135,7 +141,7 @@ while True:
         screen.blit(ground_surface,(0,300)) 
         
     
-        displayScore()
+        score=displayScore()
         #player
         player_gravity+=1
         player_rect.y=player_rect.y+player_gravity 
@@ -149,7 +155,8 @@ while True:
         
         # collsion
         
-
+        gameActive=collions(player_rect,obstacleRectList)
+        
     else:
         scoreMenu()
         
