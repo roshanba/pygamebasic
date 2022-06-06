@@ -42,12 +42,12 @@ gameActive=True
 startTime=0
 score=0
 
-textSurf=testFont.render('Score',False,'Black')
+textSurf=testFont.render('Score',False,(251, 251, 253))
 textRect=textSurf.get_rect(center=(400,40))
 
 textFont=pygame.font.Font('font/Pixeltype.ttf' ,50)
 
-textplayAgainSurf=textFont.render('Press Space to Play Again',False,'Black')
+textplayAgainSurf=textFont.render('Press Space to Play Again',False,(251, 251, 253))
 textPlayAgainRect=textplayAgainSurf.get_rect(midbottom=(400,430))
 
 
