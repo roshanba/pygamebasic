@@ -64,6 +64,19 @@ def collions(player,obstacles):
                 return False
     return True
 
+def playerAnimation():
+    global player_surf,playerIndex
+
+    if (player_rect.bottom <300):
+        player_surf=playerJump
+    else:
+        playerIndex+=0.1
+        if playerIndex>=len(playerWalk):playerIndex=0
+        player_surf=playerWalk[int(playerIndex)]
+
+
+    #display the jump surface of player is not on floor
+   
 
 pygame.init()
 clock=pygame.time.Clock()
@@ -90,7 +103,13 @@ snailSurf=pygame.image.load('graphics/snail/snail1.png').convert_alpha()
 flySurf=pygame.image.load('graphics/fly/fly1.png').convert_alpha()
 
 
-player_surf=pygame.image.load('graphics/player/player_walk_1.png').convert_alpha()
+playerWalk1=pygame.image.load('graphics/player/player_walk_1.png').convert_alpha()
+playerWalk2=pygame.image.load('graphics/player/player_walk_2.png').convert_alpha()
+playerWalk=[playerWalk1,playerWalk2]
+playerIndex=0
+playerJump=pygame.image.load('graphics/player/jump.png').convert_alpha()
+
+player_surf=playerWalk[playerIndex]
 player_rect=player_surf.get_rect(bottomright=(80,300))
 
 obstacleRectList=[]
@@ -147,7 +166,7 @@ while True:
         player_rect.y=player_rect.y+player_gravity 
         if player_rect.bottom>=300:   
             player_rect.bottom=300
-    
+        playerAnimation()
         screen.blit(player_surf,player_rect)
 
         #Obstacle movement
