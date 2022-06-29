@@ -97,10 +97,18 @@ textRect=textSurf.get_rect(center=(400,40))
 sky_surface=pygame.image.load('graphics/sky.png').convert()
 ground_surface=pygame.image.load('graphics/ground.png').convert()
 
-snailSurf=pygame.image.load('graphics/snail/snail1.png').convert_alpha()
 
+snailFrame1=pygame.image.load('graphics/snail/snail1.png').convert_alpha()
+snailFrame2=pygame.image.load('graphics/snail/snail2.png').convert_alpha()
+snailFrames=[snailFrame1,snailFrame2]
+snailFrameIndex=0
+snailSurf=snailFrames[snailFrameIndex]
 
-flySurf=pygame.image.load('graphics/fly/fly1.png').convert_alpha()
+flyFrame1=pygame.image.load('graphics/fly/fly1.png').convert_alpha()
+flyFrame2=pygame.image.load('graphics/fly/fly2.png').convert_alpha()
+flyFrames=[flyFrame1,flyFrame2]
+flyFrameIndex=0
+flySurf=flyFrames[flyFrameIndex]
 
 
 playerWalk1=pygame.image.load('graphics/player/player_walk_1.png').convert_alpha()
@@ -119,6 +127,12 @@ obstacleRectList=[]
 ###############
 obstacleTimer=pygame.USEREVENT+1
 pygame.time.set_timer(obstacleTimer,1400)
+
+snailAnimationTimer=pygame.USEREVENT+2
+pygame.time.set_timer(snailAnimationTimer,500)
+
+flyAnimationTimer=pygame.USEREVENT+3
+pygame.time.set_timer(flyAnimationTimer,200)
 
 
 ################
@@ -148,8 +162,15 @@ while True:
                 obstacleRectList.append(snailSurf.get_rect(bottomright=(randint(900,1100),300)))
             else:
                 obstacleRectList.append(flySurf.get_rect(bottomright=(randint(900,1100),210)))
-
-
+        
+        if event.type==snailAnimationTimer and gameActive:
+            if snailFrameIndex==0:snailFrameIndex=1
+            else:snailFrameIndex=0
+            snailSurf=snailFrames[snailFrameIndex]
+        if event.type==flyAnimationTimer and gameActive:
+            if flyFrameIndex==0:flyFrameIndex=1
+            else:flyFrameIndex=0
+            flySurf=flyFrames[flyFrameIndex]
     if gameActive:
         screen.blit(sky_surface,(0,0))
         pygame.draw.rect(screen,'Pink',textRect,0,5)
